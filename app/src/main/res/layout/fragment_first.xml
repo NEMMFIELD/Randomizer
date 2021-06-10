@@ -27,7 +27,8 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/previous_result" />
+        app:layout_constraintTop_toBottomOf="@id/previous_result"
+        tools:ignore="Autofill,HardcodedText" />
 
     <EditText
         android:id="@+id/max_value"
@@ -38,7 +39,8 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/min_value" />
+        app:layout_constraintTop_toBottomOf="@id/min_value"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/generate"

@@ -6,23 +6,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import kotlin.random.Random
-import kotlin.ranges.random as random
+
 
 class SecondFragment : Fragment() {
-
     private var backButton: Button? = null
     private var result: TextView? = null
-    private var randomValue = 0;
+    private lateinit var interFace :ChangeFragments
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        interFace = context as ChangeFragments
         return inflater.inflate(R.layout.fragment_second, container, false)
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,40 +33,44 @@ class SecondFragment : Fragment() {
 
         val min = arguments?.getInt(MIN_VALUE_KEY) ?: 0
         val max = arguments?.getInt(MAX_VALUE_KEY) ?: 0
+        val res = generate(min,max)
+        result?.text = res.toString()
 
-
-        result?.text = generate(min, max).toString()
-        val res = result?.text.toString().toInt()
+        val callback: OnBackPressedCallback = object : OnBackPressedCallback(
+            true // default to enabled
+        ) {
+            override fun handleOnBackPressed() {
+                interFace.toFirst(res)
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,  // LifecycleOwner
+            callback
+        )
 
         backButton?.setOnClickListener {
             // TODO: implement back
-            val fragment:FirstFragment = FirstFragment.newInstance(res)
-            activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.container,fragment, "findThisFragment")!!
-
-                .commit();
+        interFace.toFirst(res)
         }
     }
 
+
     private fun generate(min: Int, max: Int): Int {
         // TODO: generate random number
-        return Random.nextInt(min,max)
+        return (min..max).random()
     }
 
     companion object {
-
         @JvmStatic
         fun newInstance(min: Int, max: Int): SecondFragment {
             val fragment = SecondFragment()
             val args = Bundle()
-
             // TODO: implement adding arguments
             args.putInt(MIN_VALUE_KEY,min)
             args.putInt(MAX_VALUE_KEY,max)
             fragment.arguments = args
             return fragment
         }
-
         private const val MIN_VALUE_KEY = "MIN_VALUE"
         private const val MAX_VALUE_KEY = "MAX_VALUE"
     }

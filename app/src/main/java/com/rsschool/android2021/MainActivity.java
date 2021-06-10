@@ -1,14 +1,14 @@
 package com.rsschool.android2021;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements ChangeFragments{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +29,17 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment secondFragment = SecondFragment.newInstance(min,max);
         ft.replace(R.id.container,secondFragment);
-        ft.addToBackStack(null);
+       // ft.addToBackStack(null);
         ft.commit();
+    }
+
+    @Override
+    public void toFirst(int number) {
+        openFirstFragment(number);
+    }
+
+    @Override
+    public void toSecond(int min, int max) {
+    openSecondFragment(min,max);
     }
 }
